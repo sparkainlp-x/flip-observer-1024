@@ -1,8 +1,8 @@
 {
   "upload_type": "software",
   "title": "flip-observer-1024: synthetic classical channel-reversal observer calibration prototype (512 inputs, two noisy banks)",
-  "version": "0.1.0",
-  "description": "<p><strong>flip-observer-1024</strong> is a deterministic, offline Python prototype for an ordinary classical weighted readout under a hidden channel-order reversal. It uses 512 dimensionless synthetic input channels. The optional 1,024-slot layout is two noisy/dropout-affected banks observing the <em>same</em> 512 underlying signals—not 1,024 independent latent channels.</p><p><strong>Model.</strong> Target z(t)=wᵀx(t) is defined before any hidden reversal. Calibration compares only identity vs exact reversal using known orthogonal full-channel patterns. Flip means reversed channel order; P⁻¹=P. The scalar z is an ordinary weighted sum—not quantum superposition. No entanglement, membrane, or biological model.</p><p><strong>Evidence.</strong> All traces, noise, and dropout are SYNTHETIC and seed-controlled. Bundled results and visualization are from the default local sweep (108 held-out trials across 9 noise/dropout regimes).</p><p><strong>Limits.</strong> Software toy only: not a physical observer, communications product, medical device, quantum model, or claim of arbitrary-permutation recovery. Do not mint a GitHub release until the Zenodo webhook is enabled.</p>",
+  "version": "0.1.1",
+  "description": "<p><strong>flip-observer-1024</strong> is a deterministic, offline Python prototype for an ordinary classical weighted readout under a hidden channel-order reversal. It uses 512 dimensionless synthetic input channels. The optional 1,024-slot layout is two noisy/dropout-affected banks observing the <em>same</em> 512 underlying signals—not 1,024 independent latent channels.</p><p><strong>Model.</strong> Target z(t)=wᵀx(t) is defined before any hidden reversal. Calibration compares only identity vs exact reversal using known orthogonal full-channel patterns. Flip means reversed channel order; P⁻¹=P. The scalar z is an ordinary weighted sum—not quantum superposition. No entanglement, membrane, or biological model.</p><p><strong>Evidence.</strong> All traces, noise, and dropout are SYNTHETIC and seed-controlled. Bundled results and visualization are from the default local sweep (108 held-out trials across 9 noise/dropout regimes).</p><p><strong>Limits.</strong> Software toy only: not a physical observer, communications product, medical device, quantum model, or claim of arbitrary-permutation recovery. v0.1.1 adds independent-review fixes (fully generated sample report with a report-sync test; scope note on identity vs exact reversal). Cite all versions via the concept DOI 10.5281/zenodo.23173449.</p>",
   "creators": [
     {
       "name": "Brisson, Jean-François",
@@ -43,5 +43,5 @@
       "identifier": "spark-ai-nlp"
     }
   ],
-  "notes": "Evidence status: SYNTHETIC. Flip = reversed channel order; 1024 = two noisy banks on the same 512 inputs. Not biological membrane, quantum superposition, or entanglement. Commercial licensing: see COMMERCIAL-LICENSE.md. Do not mint a GitHub release until the Zenodo webhook is enabled."
+  "notes": "Evidence status: SYNTHETIC. Flip = reversed channel order; 1024 = two noisy banks on the same 512 inputs. Not biological membrane, quantum superposition, or entanglement. Commercial licensing: see COMMERCIAL-LICENSE.md. Cite all versions via the concept DOI 10.5281/zenodo.23173449."
 }

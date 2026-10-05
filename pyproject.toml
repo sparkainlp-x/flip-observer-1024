@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "flip-observer-1024"
-version = "0.1.0"
+version = "0.1.1"
 description = "Synthetic classical channel-reversal observer calibration prototype (512 inputs; two noisy banks ≠ 1024 independent channels)"
 readme = "README.md"
 requires-python = ">=3.10"

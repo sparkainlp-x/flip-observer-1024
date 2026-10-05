@@ -115,7 +115,7 @@ See [ASSUMPTIONS.md](ASSUMPTIONS.md) for the full model and “what the results 
 
 See [`CITATION.cff`](CITATION.cff) (GitHub’s “Cite this repository” button). Concept DOI (all versions): [10.5281/zenodo.23173449](https://doi.org/10.5281/zenodo.23173449). Version DOI for v0.1.0: [10.5281/zenodo.23173450](https://doi.org/10.5281/zenodo.23173450).
 
-> Brisson, Jean-François. *flip-observer-1024: synthetic classical channel-reversal observer calibration prototype (512 inputs, two noisy banks)* (v0.1.0). Spark AI NLP. https://doi.org/10.5281/zenodo.23173449
+> Brisson, Jean-François. *flip-observer-1024: synthetic classical channel-reversal observer calibration prototype (512 inputs, two noisy banks)* (v0.1.1). Spark AI NLP. https://doi.org/10.5281/zenodo.23173449
 
 Author: Jean-François Brisson, Spark AI NLP · ORCID [0009-0000-9778-5374](https://orcid.org/0009-0000-9778-5374)
 
