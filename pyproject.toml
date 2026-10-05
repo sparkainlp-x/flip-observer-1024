@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flip-observer-1024"
+version = "0.1.0"
+description = "Synthetic classical channel-reversal observer calibration prototype (512 inputs; two noisy banks ≠ 1024 independent channels)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "AGPL-3.0-only" }
+authors = [
+  { name = "Jean-François Brisson", email = "281253927+sparkainlp-x@users.noreply.github.com" },
+]
+keywords = [
+  "synthetic",
+  "calibration",
+  "observer",
+  "channel-reversal",
+  "research-software",
+]
+dependencies = ["numpy>=1.24"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: GNU Affero General Public License v3",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering",
+]
+
+[project.urls]
+Homepage = "https://sparkainlp-x.github.io/flip-observer-1024/"
+Repository = "https://github.com/sparkainlp-x/flip-observer-1024"
+Issues = "https://github.com/sparkainlp-x/flip-observer-1024/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

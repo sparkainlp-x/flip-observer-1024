@@ -1,0 +1,39 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below. All outputs are SYNTHETIC; flip means reversed channel order; 1024 means two noisy banks on the same 512 inputs—not 1024 independent channels, not a biological membrane, and not a quantum model."
+title: "flip-observer-1024: synthetic classical channel-reversal observer calibration prototype (512 inputs, two noisy banks)"
+type: software
+authors:
+  - family-names: "Brisson"
+    given-names: "Jean-François"
+    affiliation: "Spark AI NLP"
+    orcid: "https://orcid.org/0009-0000-9778-5374"
+repository-code: "https://github.com/sparkainlp-x/flip-observer-1024"
+url: "https://sparkainlp-x.github.io/flip-observer-1024/"
+license: AGPL-3.0-only
+version: "0.1.0"
+abstract: >-
+  Deterministic offline Python prototype for an ordinary classical weighted
+  readout under a hidden channel-order reversal. Uses 512 dimensionless
+  synthetic input channels; the 1,024-slot layout is two noisy banks on the
+  same 512 underlying signals (repeated measurement capacity, not 1,024
+  independent latent channels). Calibration compares only identity versus
+  exact reversal using known orthogonal full-channel patterns. SYNTHETIC
+  evidence only. Not a physical observer, membrane model, quantum superposition
+  or entanglement demo, medical device, or communications product.
+keywords:
+  - synthetic data
+  - calibration
+  - observer
+  - channel reversal
+  - flip observer
+  - research software
+  - reproducibility
+references:
+  - type: software
+    title: "OES-Resilience: benchmarking telemetry intelligence under real-world stress"
+    authors:
+      - family-names: "Brisson"
+        given-names: "Jean-François"
+        orcid: "https://orcid.org/0009-0000-9778-5374"
+    repository-code: "https://github.com/sparkainlp-x/oes-resilience"
+    doi: "10.5281/zenodo.23071166"
