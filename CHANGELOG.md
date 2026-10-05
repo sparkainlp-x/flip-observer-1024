@@ -6,6 +6,8 @@ Cite all versions via the concept DOI [10.5281/zenodo.23173449](https://doi.org/
 
 ## 0.1.1 — 2026-10-05
 
+Archived on Zenodo: version DOI [10.5281/zenodo.23173942](https://doi.org/10.5281/zenodo.23173942).
+
 Independent-review fixes. No change to the model, the default sweep, or any reported number.
 
 ### Fixed
