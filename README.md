@@ -26,6 +26,8 @@ Here `P` reverses the channel order exactly. Because reversal is its own inverse
 
 A separate calibration phase sends 512 known orthogonal full-channel patterns and observes the full channel vector. It compares the **identity** hypothesis with **exact reversal**. Calibration data and synthetic held-out signal mixtures are generated separately. The practical detector is intentionally limited to those two hypotheses; it does **not** claim to recover an arbitrary unknown 512-channel permutation.
 
+> **What the perfect result means.** The 100% calibration accuracy and zero noiseless error test **only identity versus exact reversal after known full-vector calibration**. They do **not** show recovery of an arbitrary permutation from a scalar observer: the scalar `z = wᵀx` is never used for mapping detection, and in general a single scalar output cannot identify an unknown 512-channel permutation.
+
 ## The 1,024-slot extension
 
 The extension has two transparently represented banks of 512 observations each. Both observe the same 512 underlying synthetic signal channels, but each bank receives independent synthetic measurement noise and independent per-entry dropout. One bank can be hidden-reversed, calibrated, corrected, and fused with the other by averaging available measurements.
@@ -76,6 +78,8 @@ Reported mapping accuracy is the fraction of trials where the calibration phase 
 
 The test suite checks these criteria against the generated `results/metrics.json`; run `python3 run.py` before the test command if you regenerate artifacts. Checked-in sample outputs already satisfy the suite for CI.
 
+`results/sample_report.md` is produced entirely by `render_report()` in `src/flip_observer/experiment.py`, including the “Acceptance outcome and payload arithmetic” section (derived from `metrics.json`, not hand-maintained); a unit test checks that the bundled report is byte-for-byte what the generator writes. The checked-in data files regenerate byte-identically with NumPy 2.4/2.5; other NumPy/BLAS builds may differ in the last floating-point digit of `metrics.json`/`trials.csv` without changing the rounded report.
+
 ## Illustrative raw payload arithmetic
 
 For a throughput comparison only, assume 16-bit samples and 1,000 samples/second/channel, with no framing or protocol overhead. A 512-channel bank carries `512 × 16 × 1,000 = 8,192,000 bit/s` (8.192 Mbit/s). Two banks (1,024 measurement slots) carry 16.384 Mbit/s. Copying a bank doubles transmitted bits but not independent signal content. These are arithmetic assumptions, not measured performance or an implementation requirement.
@@ -86,7 +90,7 @@ For a throughput comparison only, assume 16-bit samples and 1,000 samples/second
 |---|---|
 | `src/flip_observer/core.py` | Reversal, fixed readout, orthogonal calibration patterns, calibration detector |
 | `src/flip_observer/experiment.py` | Seeded synthetic traces, two-bank fault injection, benchmark, report/visualization |
-| `tests/test_prototype.py` | Correctness, recovery, duplication, reproducibility, and sweep acceptance tests |
+| `tests/test_prototype.py` | Correctness, recovery, duplication, reproducibility, sweep acceptance, and report-sync tests |
 | `run.py` | Local benchmark entry point |
 | `docs/index.html` | Static visualization served by GitHub Pages |
 | `results/` | Checked-in sample outputs from the default run |

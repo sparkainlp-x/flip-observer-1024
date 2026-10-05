@@ -14,7 +14,7 @@ from flip_observer.core import (
     reverse_channels,
     undo_reversal,
 )
-from flip_observer.experiment import _one_trial
+from flip_observer.experiment import _one_trial, render_report
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -88,6 +88,14 @@ class FlipObserverTests(unittest.TestCase):
 
         clean = next(c for c in results["conditions"] if c["noise_std"] == 0.0 and c["dropout"] == 0.0)
         self.assertEqual(clean["metrics"]["oracle_nrmse"]["max"], 0.0)
+
+    def test_bundled_report_is_exactly_what_the_generator_writes(self) -> None:
+        # Guards against hand-edited/stale report text: every section, including the
+        # acceptance outcome and payload arithmetic, must come from render_report().
+        results = json.loads((ROOT / "results" / "metrics.json").read_text(encoding="utf-8"))
+        bundled = (ROOT / "results" / "sample_report.md").read_text(encoding="utf-8")
+        self.assertEqual(render_report(results), bundled)
+        self.assertIn("## Acceptance outcome and payload arithmetic", bundled)
 
 
 if __name__ == "__main__":

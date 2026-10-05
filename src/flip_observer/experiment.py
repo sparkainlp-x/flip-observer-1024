@@ -215,24 +215,82 @@ def run_benchmark(seeds: tuple[int, ...] = DEFAULT_SEEDS) -> dict[str, Any]:
     }
 
 
-def write_artifacts(output_dir: str | Path, results: dict[str, Any]) -> None:
-    """Write deterministic JSON/CSV, a concise Markdown report and offline HTML."""
-    output = Path(output_dir)
-    output.mkdir(parents=True, exist_ok=True)
-    results_path = output / "metrics.json"
-    results_path.write_text(json.dumps(results, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+# Illustrative raw-throughput assumptions for the generated payload arithmetic.
+PAYLOAD_BITS_PER_SAMPLE = 16
+PAYLOAD_SAMPLES_PER_SECOND = 1000
 
-    flat_rows: list[dict[str, Any]] = []
-    for condition in results["conditions"]:
-        for trial in condition["trials"]:
-            flat_rows.append(trial)
-    csv_path = output / "trials.csv"
-    if flat_rows:
-        with csv_path.open("w", newline="", encoding="utf-8") as stream:
-            writer = csv.DictWriter(stream, fieldnames=list(flat_rows[0].keys()))
-            writer.writeheader()
-            writer.writerows(flat_rows)
 
+def _acceptance_lines(results: dict[str, Any]) -> list[str]:
+    """Acceptance outcome and payload arithmetic, derived only from ``results``.
+
+    Generated (not hand-maintained) so a regenerated report cannot drift from
+    the metrics. It does not assert unit-test outcomes; run the test suite.
+    """
+    conditions = results["conditions"]
+    criteria = results["pass_criteria"]
+    channels = int(results["model"]["channels_per_bank"])
+    trials = [t for c in conditions for t in c["trials"]]
+    trial_count = sum(int(c["trial_count"]) for c in conditions)
+    min_identity = min(c["identity_calibration_accuracy"] for c in conditions)
+    min_reversal = min(c["reversal_calibration_accuracy"] for c in conditions)
+    wins = trial_count - sum(int(c["calibrated_not_better_than_uncorrected_count"]) for c in conditions)
+    unique_channels = {int(t["duplicate_unique_channels"]) for t in trials}
+    duplicate_change = max(float(t["duplicate_vs_single_max_abs"]) for t in trials)
+    noiseless = [c for c in conditions if c["noise_std"] == 0.0 and c["dropout"] == 0.0]
+    noiseless_oracle = max((c["metrics"]["oracle_nrmse"]["max"] for c in noiseless), default=float("nan"))
+
+    passed = (
+        noiseless_oracle <= criteria["exact_noiseless_correction_max_abs_error"]
+        and min(min_identity, min_reversal) >= criteria["calibration_accuracy_min_per_regime"]
+        and all(
+            (c["trial_count"] - c["calibrated_not_better_than_uncorrected_count"]) / c["trial_count"]
+            >= criteria["calibrated_vs_uncorrected_win_fraction_min"]
+            for c in conditions
+        )
+        and unique_channels == {int(criteria["duplicate_unique_channel_count"])}
+    )
+    sweep = "default sweep" if tuple(results["sweep"]["seeds"]) == DEFAULT_SEEDS else "sweep"
+    if min_identity == 1.0 and min_reversal == 1.0:
+        calibration = "identity and reversal calibration each achieved 100% accuracy in every regime"
+    else:
+        calibration = (
+            f"minimum per-regime calibration accuracy was {min_identity:.0%} (identity) "
+            f"and {min_reversal:.0%} (reversal)"
+        )
+    unique_text = "/".join(str(u) for u in sorted(unique_channels))
+    if duplicate_change == 0.0:
+        duplication = f"exact-copy duplication represented {unique_text} unique source channels with zero change to the fused estimate"
+    else:
+        duplication = (
+            f"exact-copy duplication represented {unique_text} unique source channels; "
+            f"max fused-estimate change {duplicate_change:.3g}"
+        )
+    if noiseless_oracle == 0.0:
+        oracle = "In the noiseless/no-dropout regime, the oracle corrected readout had exactly zero normalized error."
+    else:
+        oracle = f"In the noiseless/no-dropout regime, the oracle corrected readout had max normalized error {noiseless_oracle:.3g}."
+
+    bank_mbit = PAYLOAD_BITS_PER_SAMPLE * PAYLOAD_SAMPLES_PER_SECOND * channels / 1e6
+    return [
+        "",
+        "",
+        "## Acceptance outcome and payload arithmetic",
+        "",
+        f"The {sweep} {'passed' if passed else 'did NOT pass'} all predeclared criteria: "
+        f"{trial_count} trials across {len(conditions)} regimes; {calibration}; "
+        f"calibrated recovery beat the uncorrected flip in {wins}/{trial_count} trials; and {duplication}. "
+        f"{oracle} This report is generated from `metrics.json`; it does not record unit-test results "
+        "(run `PYTHONPATH=src python -m unittest discover -s tests`).",
+        "",
+        f"For an illustrative raw throughput only, assume {PAYLOAD_BITS_PER_SAMPLE}-bit samples at "
+        f"{PAYLOAD_SAMPLES_PER_SECOND:,} samples/second/channel, excluding all framing and protocol overhead: "
+        f"{channels} channels = {bank_mbit:.3f} Mbit/s; two {channels}-channel banks = {2 * bank_mbit:.3f} Mbit/s. "
+        "The second figure is twice the traffic, not twice the number of independent latent signals.",
+    ]
+
+
+def render_report(results: dict[str, Any]) -> str:
+    """Return the full Markdown report text for ``results`` (deterministic)."""
     lines = [
         "# Sample benchmark results",
         "",
@@ -277,7 +335,29 @@ def write_artifacts(output_dir: str | Path, results: dict[str, Any]) -> None:
         "",
         "See `visualization.html` for an offline interactive comparison and `metrics.json` / `trials.csv` for the full trial-level values.",
     ])
-    (output / "sample_report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    lines.extend(_acceptance_lines(results))
+    return "\n".join(lines) + "\n"
+
+
+def write_artifacts(output_dir: str | Path, results: dict[str, Any]) -> None:
+    """Write deterministic JSON/CSV, a concise Markdown report and offline HTML."""
+    output = Path(output_dir)
+    output.mkdir(parents=True, exist_ok=True)
+    results_path = output / "metrics.json"
+    results_path.write_text(json.dumps(results, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    flat_rows: list[dict[str, Any]] = []
+    for condition in results["conditions"]:
+        for trial in condition["trials"]:
+            flat_rows.append(trial)
+    csv_path = output / "trials.csv"
+    if flat_rows:
+        with csv_path.open("w", newline="", encoding="utf-8") as stream:
+            writer = csv.DictWriter(stream, fieldnames=list(flat_rows[0].keys()))
+            writer.writeheader()
+            writer.writerows(flat_rows)
+
+    (output / "sample_report.md").write_text(render_report(results), encoding="utf-8")
 
     data = json.dumps(results, separators=(",", ":"), sort_keys=True).replace("</", "<\\/")
     html = _offline_html(data)

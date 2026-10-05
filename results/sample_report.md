@@ -43,6 +43,6 @@ See `visualization.html` for an offline interactive comparison and `metrics.json
 
 ## Acceptance outcome and payload arithmetic
 
-The default sweep passed all predeclared criteria: 108 trials across 9 regimes; identity and reversal calibration each achieved 100% accuracy in every regime; calibrated recovery beat the uncorrected flip in 108/108 trials; and exact-copy duplication represented 512 unique source channels with zero change to the fused estimate. In the noiseless/no-dropout regime, the oracle corrected readout had exactly zero normalized error. The seven automated tests passed.
+The default sweep passed all predeclared criteria: 108 trials across 9 regimes; identity and reversal calibration each achieved 100% accuracy in every regime; calibrated recovery beat the uncorrected flip in 108/108 trials; and exact-copy duplication represented 512 unique source channels with zero change to the fused estimate. In the noiseless/no-dropout regime, the oracle corrected readout had exactly zero normalized error. This report is generated from `metrics.json`; it does not record unit-test results (run `PYTHONPATH=src python -m unittest discover -s tests`).
 
 For an illustrative raw throughput only, assume 16-bit samples at 1,000 samples/second/channel, excluding all framing and protocol overhead: 512 channels = 8.192 Mbit/s; two 512-channel banks = 16.384 Mbit/s. The second figure is twice the traffic, not twice the number of independent latent signals.
