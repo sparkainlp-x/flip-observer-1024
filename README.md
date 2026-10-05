@@ -3,7 +3,7 @@
 [![CI](https://github.com/sparkainlp-x/flip-observer-1024/actions/workflows/ci.yml/badge.svg)](https://github.com/sparkainlp-x/flip-observer-1024/actions/workflows/ci.yml)
 [![License: AGPL-3.0-only](https://img.shields.io/badge/License-AGPL--3.0--only-blue.svg)](LICENSE)
 [![Evidence: SYNTHETIC](https://img.shields.io/badge/evidence-SYNTHETIC-blue.svg)](#scope-and-limitations)
-[![DOI: pending](https://img.shields.io/badge/DOI-pending-lightgrey.svg)](#cite)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23173449.svg)](https://doi.org/10.5281/zenodo.23173449)
 [![Demo](https://img.shields.io/badge/demo-GitHub%20Pages-245a9b.svg)](https://sparkainlp-x.github.io/flip-observer-1024/)
 
 Offline Python prototype for an **ordinary classical weighted readout** under a hidden **channel-order reversal**. All inputs are **SYNTHETIC**. It is a software experiment only—not a biological membrane model, not a quantum model, and not a claim of entanglement or superposition.
@@ -109,11 +109,9 @@ See [ASSUMPTIONS.md](ASSUMPTIONS.md) for the full model and “what the results 
 
 ## Cite
 
-See [`CITATION.cff`](CITATION.cff) (GitHub’s “Cite this repository” button).
+See [`CITATION.cff`](CITATION.cff) (GitHub’s “Cite this repository” button). Concept DOI (all versions): [10.5281/zenodo.23173449](https://doi.org/10.5281/zenodo.23173449). Version DOI for v0.1.0: [10.5281/zenodo.23173450](https://doi.org/10.5281/zenodo.23173450).
 
-> Brisson, Jean-François. *flip-observer-1024: synthetic classical channel-reversal observer calibration prototype (512 inputs, two noisy banks)* (v0.1.0). Spark AI NLP. https://github.com/sparkainlp-x/flip-observer-1024
-
-A Zenodo DOI will be added after the first archived release. **Do not mint a GitHub release/tag until the Zenodo–GitHub webhook is enabled** for this repository; `.zenodo.json` is prepared for that step.
+> Brisson, Jean-François. *flip-observer-1024: synthetic classical channel-reversal observer calibration prototype (512 inputs, two noisy banks)* (v0.1.0). Spark AI NLP. https://doi.org/10.5281/zenodo.23173449
 
 Author: Jean-François Brisson, Spark AI NLP · ORCID [0009-0000-9778-5374](https://orcid.org/0009-0000-9778-5374)
 
